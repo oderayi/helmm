@@ -1,0 +1,45 @@
+name: Upgrade helm charts minor versions
+ 
+on: workflow_dispatch
+ 
+jobs:
+ upgrade-helm-charts:
+   runs-on: ubuntu-latest
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+       with:
+         fetch-depth: 0
+ 
+     - name: Set up Helm
+       uses: azure/setup-helm@v1
+       with:
+         version: v3.7.2
+ 
+     - uses: actions/setup-python@v2
+       with:
+         python-version: 3.7
+      
+     - name: install pyaml
+       run: |
+         pip3 install pyaml==21.10.1
+ 
+     - name: install updateCli
+       run: |
+         curl -sL -o /tmp/updatecli_amd64.deb https://github.com/updatecli/updatecli/releases/download/v0.68.0/updatecli_amd64.deb
+         sudo apt install /tmp/updatecli_amd64.deb
+ 
+     - name: Run chart bumper script
+       run: |
+         python scripts/chart_bumper.py
+         rm -f manifest.yaml
+ 
+     - name: Create Pull Request
+       uses: peter-evans/create-pull-request@v4
+       with:
+         commit-message: "feat: upgrade helm charts"
+         title: "chore: upgrade helm charts minor versions"
+         body: |
+           Automatic upgrade of helm chart minor versions using https://github.com/updatecli/updatecli
+         branch: upgrade-helm-charts-minors
+         base: main
