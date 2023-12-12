@@ -90,7 +90,7 @@ account-lookup-service:
     # Declare variables to be passed into your templates.
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/account-lookup-service
       tag: v14.1.0
       ## Specify a imagePullPolicy
@@ -447,7 +447,7 @@ account-lookup-service:
     # Declare variables to be passed into your templates.
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/account-lookup-service
       tag: v14.1.0
       ## Specify a imagePullPolicy
@@ -1241,7 +1241,7 @@ quoting-service:
 
   # Declare variables to be passed into your templates.
   image:
-    registry: "docker.io"
+    registry: docker.io
     repository: mojaloop/quoting-service
     tag: v15.0.2
     ## Specify a imagePullPolicy
@@ -1576,7 +1576,7 @@ ml-api-adapter:
     # This is a YAML-formatted file.
     # Declare variables to be passed into your templates.
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/ml-api-adapter
       tag: v14.0.0
       ## Specify a imagePullPolicy
@@ -1854,7 +1854,7 @@ ml-api-adapter:
     # Declare variables to be passed into your templates.
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/ml-api-adapter
       tag: v14.0.0
       ## Specify a imagePullPolicy
@@ -2196,7 +2196,7 @@ centralledger:
 
     # Declare variables to be passed into your templates.
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -2532,7 +2532,7 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -2870,7 +2870,7 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -3205,7 +3205,7 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -3540,7 +3540,7 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -3875,7 +3875,7 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -4215,7 +4215,7 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
       tag: v17.0.3
       ## Specify a imagePullPolicy
@@ -4549,7 +4549,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -4980,7 +4980,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -5415,7 +5415,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -5850,7 +5850,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -6374,7 +6374,7 @@ transaction-requests-service:
   # Declare variables to be passed into your templates.
 
   image:
-    registry: "docker.io"
+    registry: docker.io
     repository: mojaloop/transaction-requests-service
     tag: v14.1.0
     ## Specify a imagePullPolicy
@@ -6646,7 +6646,7 @@ thirdparty:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/auth-service
       tag: v14.0.0
       ## Specify a imagePullPolicy
@@ -7053,7 +7053,7 @@ thirdparty:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/als-consent-oracle
       tag: v0.2.0
       ## Specify a imagePullPolicy
@@ -7314,7 +7314,7 @@ thirdparty:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/thirdparty-api-svc
       tag: v13.0.2
       ## Specify a imagePullPolicy
@@ -9023,7 +9023,7 @@ simulator:
   # Declare variables to be passed into your templates.
 
   image:
-    registry: "docker.io"
+    registry: docker.io
     repository: mojaloop/simulator
     tag: v12.0.0
     ## Specify a imagePullPolicy
@@ -10764,7 +10764,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/bulk-api-adapter
         tag: v15.0.3
         ## Specify a imagePullPolicy
@@ -11022,7 +11022,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/bulk-api-adapter
         tag: v15.0.3
         ## Specify a imagePullPolicy
@@ -11327,7 +11327,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
         tag: v17.0.3
         ## Specify a imagePullPolicy
@@ -11692,7 +11692,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
         tag: v17.0.3
         ## Specify a imagePullPolicy
@@ -12054,7 +12054,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
         tag: v17.0.3
         ## Specify a imagePullPolicy
@@ -12416,7 +12416,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
         tag: v17.0.3
         ## Specify a imagePullPolicy
