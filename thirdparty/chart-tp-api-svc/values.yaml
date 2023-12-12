@@ -1,7 +1,7 @@
 enabled: true
 
 image:
-  registry: "docker.io"
+  registry: docker.io
   repository: mojaloop/thirdparty-api-svc
   tag: v13.0.2
   ## Specify a imagePullPolicy
