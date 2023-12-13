@@ -47,4 +47,3 @@ targets:
       name: account-lookup-service
       file: Chart.yaml
       key: $.version
-      versionincrement: patch
