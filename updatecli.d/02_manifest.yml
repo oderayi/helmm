@@ -41,14 +41,10 @@ sources:
 conditions: {}
 targets:
   Chart.yaml:
-    sourceid: account-lookup-service
-    name: "Chart.yaml"
+    name: "update chart version"
     kind: helmchart
     spec:
       name: account-lookup-service
       file: Chart.yaml
       key: $.version
-
-
-      
-  
+      versionincrement: patch
