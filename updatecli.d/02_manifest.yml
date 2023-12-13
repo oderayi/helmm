@@ -1,0 +1,54 @@
+
+define: &github_token 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
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+name: Update chart version
+
+# account-lookup-service charts
+sources:
+  account-lookup-service:
+    kind: githubrelease
+    spec:
+      owner: mojaloop
+      token: *github_token
+      repository: account-lookup-service
+conditions: {}
+targets:
+  Chart.yaml:
+    sourceid: account-lookup-service
+    name: "Chart.yaml"
+    kind: helmchart
+    spec:
+      name: account-lookup-service
+      file: Chart.yaml
+      key: $.version
+
+
+      
+  
