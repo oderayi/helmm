@@ -118,12 +118,11 @@ jobs:
       - name: Determine release version number
         id: determine-release-version
         env:
-          RELEASE_VERSION: ${{ inputs.release_version }}
-          LAST_RELEASE_TAG: ${{ inputs.last_release_tag }}
+          _RELEASE_VERSION: ${{ inputs.release_version }}
+          _LAST_RELEASE_TAG: ${{ inputs.last_release_tag }}
         run: |
-          if [[ -z $RELEASE_VERSION ]]; then
-            release_version=$(.github/workflows/scripts/determine-release-version.sh $LAST_RELEASE_TAG)
-            # export RELEASE_VERSION=$release_version
+          if [[ -z $_RELEASE_VERSION ]]; then
+            release_version=$(.github/workflows/scripts/determine-release-version.sh $_LAST_RELEASE_TAG)
             echo "RELEASE_VERSION=$release_version" >> $GITHUB_OUTPUT
           else
             echo "RELEASE_VERSION=$release_version" >> $GITHUB_OUTPUT
