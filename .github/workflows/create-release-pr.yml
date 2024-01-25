@@ -66,6 +66,11 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
           fetch-depth: 1
+      
+      - name: Fetch git tags
+        id: fetch-git-tags
+        run: |
+          git fetch --tags
 
       - name: Set up Helm
         id: setup-helm
