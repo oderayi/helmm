@@ -4,13 +4,15 @@ sources:
   ml-testing-toolkit-test-cases:
     kind: githubrelease
     spec:
-      owner: mojaloop
+    #   owner: mojaloop
+      owner: oderayi
       token: '{{ requiredEnv "AUTO_RELEASE_TOKEN" }}'
       repository: testing-toolkit-test-cases
   ml-testing-toolkit-test-cases-trimmed:
     kind: githubrelease
     spec:
-      owner: mojaloop
+      #   owner: mojaloop
+      owner: oderayi
       token: '{{ requiredEnv "AUTO_RELEASE_TOKEN" }}'
       repository: testing-toolkit-test-cases
     transformers:
