@@ -89,8 +89,6 @@ jobs:
 
       - name: Setup Helm repositories
         id: setup-helm-repos
-        # env:
-          # KUBECONFIG: .tmp/test.mojaloop.live.conf
         run: |
           # Setup Helm Repos
           helm repo add stable https://charts.helm.sh/stable
@@ -115,7 +113,7 @@ jobs:
         id: generate-changelog
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-        run: .github/workflows/scripts/generate-changelog.sh
+        run: .github/workflows/scripts/generate-changelog.sh ${{ inputs.last_release_tag }}
 
       - name: Determine release version number
         id: determine-release-version

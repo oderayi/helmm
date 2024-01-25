@@ -29,14 +29,6 @@ if [ -z "$AUTO_RELEASE_TOKEN" ]; then
     exit 1
 fi
 
-# Check if the last_release_tag argument is provided
-if [ -z "$1" ]; then
-    echo "The \"last_release_tag\" argument is not provided. Please provide the \"last_release_tag\" argument and try again."
-    usage
-    echo "last_release_tag = [ null | tag of the last release ]"
-    exit 1
-fi
-
 ######################
 # Global variables   #
 ######################
@@ -59,6 +51,7 @@ readonly -a excluded_charts=(
 # 'last_release_tag' is the last release tag, if not provided, it will be the last tag in the current branch
 if [ -z "$1" ] || [ $1 == null ]; then
     last_release_tag=$(git describe --tags --abbrev=0)
+    echo "The \"last_release_tag\" argument is not provided. Using last tag in the current branch: $last_release_tag"
 else
     last_release_tag=$1
 fi
