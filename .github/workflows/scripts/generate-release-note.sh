@@ -196,7 +196,7 @@ individual_contributors() {
     for file in $dir/changelogs/*.json
     do
         repository=$(basename $file | cut -d'.' -f1)
-        individual_contributors+=$(cat $file | jq -r '.commits[].author | select(.login != null) .login'  | sed 's/^/@/' | tr '\n' ',' | sed 's/,$//g' | sed 's/,/, /g')
+        individual_contributors+=$(cat $file | jq -r '.commits[].author | select(.login != null) .login'  | sed 's/^/@/' | sort -u | tr '\n' ',' | sed 's/,$//g' | sed 's/,/, /g')
     done
 
     echo "$individual_contributors"
