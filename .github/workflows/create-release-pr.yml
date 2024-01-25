@@ -123,9 +123,9 @@ jobs:
         run: |
           if [[ -z $_RELEASE_VERSION ]]; then
             release_version=$(.github/workflows/scripts/determine-release-version.sh $_LAST_RELEASE_TAG)
-            echo "HELM_RELEASE_VERSION=$(echo $release_version)" >> $GITHUB_OUTPUT
+            echo "HELM_RELEASE_VERSION=$(echo $release_version)" >> "$GITHUB_OUTPUT"
           else
-            echo "HELM_RELEASE_VERSION=$release_version" >> $GITHUB_OUTPUT
+            echo "HELM_RELEASE_VERSION=$release_version" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Prepare TTK test cases release
