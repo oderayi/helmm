@@ -131,13 +131,12 @@ jobs:
 
       - name: Next release version
         run: |
-          export "RELEASE_VERSION=${{ steps.determine-release-version.outputs.RELEASE_VERSION }}"
+          export RELEASE_VERSION='${{ steps.determine-release-version.outputs.RELEASE_VERSION }}'
           # if RELEASE_VERSION is not set, or it doesn't match a valid semver version, exit with error
           if [[ -z "$RELEASE_VERSION" || ! "$RELEASE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "RELEASE_VERSION is not set or is not a valid semver version"
             exit 1
           fi
-
 
       # - name: Prepare TTK test cases release
       #   id: prepare-ttk-test-cases-release
