@@ -154,7 +154,7 @@ jobs:
         id: update-ttk-test-cases-version
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-        run: updatecli apply --config .github/workflows/manifests/first-pass/mojaloop.yaml
+        run: updatecli apply --config .github/workflows/manifests/third-pass/mojaloop.yaml
 
       - name: Generate release note
         id: generate-release-note
