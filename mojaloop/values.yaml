@@ -93,7 +93,7 @@ account-lookup-service:
     # Declare variables to be passed into your templates.
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/account-lookup-service
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -162,7 +162,8 @@ account-lookup-service:
 
       # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
       # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-      protocol_versions: {
+      protocol_versions: |
+        {
           "CONTENT": {
             "DEFAULT": "1.1",
             "VALIDATELIST": [
@@ -185,9 +186,18 @@ account-lookup-service:
       log_level: info
       log_transport: file
 
-      end_point_cache:
+      central_shared_end_point_cache:
         expiresIn: 180000
         generateTimeout: 30000
+        getDecoratedValue: true
+      central_shared_participant_cache:
+        expiresIn: 61000
+        generateTimeout: 30000
+        getDecoratedValue: true
+      general_cache:
+        enabled: true
+        maxByteSize: 10000000
+        expiresIn: 61000
 
       error_handling:
         include_cause_extension: false
@@ -450,7 +460,7 @@ account-lookup-service:
     # Declare variables to be passed into your templates.
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/account-lookup-service
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -519,7 +529,8 @@ account-lookup-service:
 
       # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
       # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-      protocol_versions: {
+      protocol_versions: |
+        {
           "CONTENT": {
             "DEFAULT": "1.1",
             "VALIDATELIST": [
@@ -538,9 +549,18 @@ account-lookup-service:
           }
         }
 
-      end_point_cache:
+      central_shared_end_point_cache:
         expiresIn: 180000
         generateTimeout: 30000
+        getDecoratedValue: true
+      central_shared_participant_cache:
+        expiresIn: 61000
+        generateTimeout: 30000
+        getDecoratedValue: true
+      general_cache:
+        enabled: true
+        maxByteSize: 10000000
+        expiresIn: 61000
 
       error_handling:
         include_cause_extension: false
@@ -1244,7 +1264,7 @@ quoting-service:
 
   # Declare variables to be passed into your templates.
   image:
-    registry: "docker.io"
+    registry: docker.io
     repository: mojaloop/quoting-service
     tag: v15.5.0
     ## Specify a imagePullPolicy
@@ -1282,7 +1302,8 @@ quoting-service:
 
     # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
     # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-    protocol_versions: {
+    protocol_versions: | 
+      {
         "CONTENT": {
           "DEFAULT": "1.1",
           "VALIDATELIST": [
@@ -1589,7 +1610,7 @@ ml-api-adapter:
     # This is a YAML-formatted file.
     # Declare variables to be passed into your templates.
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/ml-api-adapter
       tag: v14.0.5
       ## Specify a imagePullPolicy
@@ -1670,11 +1691,11 @@ ml-api-adapter:
     ##    command: ['sh', '-c', 'echo "hello world"']
     ##
     # initContainers: []
-    initContainers:
+    initContainers: |
       - name: wait-for-kafka
         image: solsson/kafka:2.8.1
         imagePullPolicy: IfNotPresent
-        command:
+        command: 
           - sh
           - -c
           - until ./bin/kafka-broker-api-versions.sh --bootstrap-server ${KAFKA_HOST}:${KAFKA_PORT};
@@ -1710,7 +1731,8 @@ ml-api-adapter:
 
       # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
       # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-      protocol_versions: {
+      protocol_versions: |
+        {
           "CONTENT": {
             "DEFAULT": "1.1",
             "VALIDATELIST": [
@@ -1867,7 +1889,7 @@ ml-api-adapter:
     # Declare variables to be passed into your templates.
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/ml-api-adapter
       tag: v14.0.5
       ## Specify a imagePullPolicy
@@ -1950,11 +1972,11 @@ ml-api-adapter:
     ##    command: ['sh', '-c', 'echo "hello world"']
     ##
     # initContainers: []
-    initContainers:
+    initContainers: |
       - name: wait-for-kafka
         image: solsson/kafka:2.8.1
         imagePullPolicy: IfNotPresent
-        command:
+        command: 
           - sh
           - -c
           - until ./bin/kafka-broker-api-versions.sh --bootstrap-server ${KAFKA_HOST}:${KAFKA_PORT};
@@ -1990,7 +2012,8 @@ ml-api-adapter:
 
       # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
       # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-      protocol_versions: {
+      protocol_versions: |
+        {
           "CONTENT": {
             "DEFAULT": "1.1",
             "VALIDATELIST": [
@@ -2209,9 +2232,9 @@ centralledger:
 
     # Declare variables to be passed into your templates.
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -2545,9 +2568,9 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -2886,9 +2909,9 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -3222,9 +3245,9 @@ centralledger:
     enabled: *CL_BATCH_PROCESSING_ENABLED
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -3564,9 +3587,9 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -3899,9 +3922,9 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -4048,6 +4071,9 @@ centralledger:
       cache_enabled: false
       cache_max_byte_size: 10000000
       cache_expires_in_ms: 1000
+
+      ## BATCH_PROCESSING: Set following to true for enabling batch processing
+      batch_processing_enabled: *CL_BATCH_PROCESSING_ENABLED
 
     ## @param initContainers Add additional init containers to the %%MAIN_CONTAINER_NAME%% pod(s)
     ## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
@@ -4234,9 +4260,9 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -4574,9 +4600,9 @@ centralledger:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-ledger
-      tag: v17.4.0
+      tag: v17.6.0
       ## Specify a imagePullPolicy
       ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
       ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -4908,7 +4934,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v16.0.0
       ## Specify a imagePullPolicy
@@ -5339,7 +5365,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v16.0.0
       ## Specify a imagePullPolicy
@@ -5774,7 +5800,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v16.0.0
       ## Specify a imagePullPolicy
@@ -6209,7 +6235,7 @@ centralsettlement:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/central-settlement
       tag: v16.0.0
       ## Specify a imagePullPolicy
@@ -6733,7 +6759,7 @@ transaction-requests-service:
   # Declare variables to be passed into your templates.
 
   image:
-    registry: "docker.io"
+    registry: docker.io
     repository: mojaloop/transaction-requests-service
     tag: v14.1.2
     ## Specify a imagePullPolicy
@@ -6848,7 +6874,8 @@ transaction-requests-service:
 
     # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
     # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-    protocol_versions: {
+    protocol_versions: |
+      {
         "CONTENT": {
           "DEFAULT": "1.1",
           "VALIDATELIST": [
@@ -7005,7 +7032,7 @@ thirdparty:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/auth-service
       tag: v15.0.0
       ## Specify a imagePullPolicy
@@ -7412,7 +7439,7 @@ thirdparty:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/als-consent-oracle
       tag: v0.2.2
       ## Specify a imagePullPolicy
@@ -7673,7 +7700,7 @@ thirdparty:
     enabled: true
 
     image:
-      registry: "docker.io"
+      registry: docker.io
       repository: mojaloop/thirdparty-api-svc
       tag: v14.0.0
       ## Specify a imagePullPolicy
@@ -8107,7 +8134,6 @@ thirdparty:
                   }
                 },
                 "redis": {
-                  ## Host is managed by environment variables
                   "port": 6379,
                   "timeout": 100
                 },
@@ -8864,7 +8890,7 @@ thirdparty:
       #   blah blah blah
       #   -----END PUBLIC KEY-----
 
-    defaults: &defaults
+    defaults:
       # Changes to this object in the parent chart, for example 'mojaloop-simulator.defaults' will be
       # applied to all simulators deployed by this child chart.
       config:
@@ -9198,6 +9224,7 @@ thirdparty:
               #     ..
               # outbound: *inbound
               inbound: &inbound
+              # DO NOT REMOVE COMMENT
               outbound: *inbound
             jws:
               # Use the privKeySecretName field if you would like to supply a JWS private key external
@@ -9298,7 +9325,6 @@ thirdparty:
                 }
               },
               "redis": {
-                ## Host is managed by environment variables
                 "port": 6379,
                 "timeout": 100
               },
@@ -9331,8 +9357,8 @@ thirdparty:
               "jwsSigningKey": "/jwsSigningKey.key",
               "jwsVerificationKeysDirectory": null
             }
-          }
-
+          } 
+          
           env:
             NODE_ENV: production
             INBOUND_LISTEN_PORT: 4005
@@ -9382,7 +9408,7 @@ simulator:
   # Declare variables to be passed into your templates.
 
   image:
-    registry: "docker.io"
+    registry: docker.io
     repository: mojaloop/simulator
     tag: v12.0.0
     ## Specify a imagePullPolicy
@@ -10716,37 +10742,38 @@ mojaloop-ttk-simulators:
           api_definitions__mojaloop_sdk_outbound_scheme_adapter_1.0__callback_map.json: 'https://github.com/mojaloop/sdk-scheme-adapter/raw/v23.1.1/test/func/config/ttk-ttksim1/spec_files/api_definitions/mojaloop_sdk_outbound_scheme_adapter_1.0/callback_map.json'
 
         extraEnvironments:
-          hub-k8s-default-environment.json: &ttksim1InputValues {
-            "inputValues": {
-              "TTKSIM1_FSPID": "ttksim1",
-              "TTKSIM1_MSISDN_1": "16135551212",
-              "TTKSIM1_MSISDN_1_FIRST_NAME": "ReceiverFirst",
-              "TTKSIM1_MSISDN_1_LAST_NAME": "ReceiverLast",
-              "TTKSIM1_CURRENCY": "TZS",
-              "TTKSIM2_FSPID": "ttksim2",
-              "TTKSIM2_MSISDN_1": "4561000001",
-              "TTKSIM2_MSISDN_1_FIRST_NAME": "ReceiverFirst",
-              "TTKSIM2_MSISDN_1_LAST_NAME": "ReceiverLast",
-              "TTKSIM2_MSISDN_2": "4561000002",
-              "TTKSIM2_MSISDN_2_FIRST_NAME": "ReceiverFirst",
-              "TTKSIM2_MSISDN_2_LAST_NAME": "ReceiverLast",
-              "TTKSIM2_PARTY_NOT_FOUND": "partynotfound",
-              "TTKSIM2_PARTY_TIMES_OUT": "partytimesout",
-              "TTKSIM2_CURRENCY": "TZS",
-              "TTKSIM3_FSPID": "ttksim3",
-              "TTKSIM3_MSISDN_1": "5671000001",
-              "TTKSIM3_MSISDN_1_FIRST_NAME": "ReceiverFirst",
-              "TTKSIM3_MSISDN_1_LAST_NAME": "ReceiverLast",
-              "TTKSIM3_MSISDN_2": "5671000002",
-              "TTKSIM3_MSISDN_2_FIRST_NAME": "ReceiverFirst",
-              "TTKSIM3_MSISDN_2_LAST_NAME": "ReceiverLast",
-              "TTKSIM3_CURRENCY": "TZS",
-              "TTKSIM2_MSISDN_PREFIX": "4561",
-              "TTKSIM3_MSISDN_PREFIX": "5671",
-              "HOST_CENTRAL_LEDGER": "http://$release_name-centralledger-service",
-              "HOST_CENTRAL_SETTLEMENT": "http://$release_name-centralsettlement-service/v2"
+          hub-k8s-default-environment.json: &ttksim1InputValues
+            {
+              "inputValues": {
+                "TTKSIM1_FSPID": "ttksim1",
+                "TTKSIM1_MSISDN_1": "16135551212",
+                "TTKSIM1_MSISDN_1_FIRST_NAME": "ReceiverFirst",
+                "TTKSIM1_MSISDN_1_LAST_NAME": "ReceiverLast",
+                "TTKSIM1_CURRENCY": "TZS",
+                "TTKSIM2_FSPID": "ttksim2",
+                "TTKSIM2_MSISDN_1": "4561000001",
+                "TTKSIM2_MSISDN_1_FIRST_NAME": "ReceiverFirst",
+                "TTKSIM2_MSISDN_1_LAST_NAME": "ReceiverLast",
+                "TTKSIM2_MSISDN_2": "4561000002",
+                "TTKSIM2_MSISDN_2_FIRST_NAME": "ReceiverFirst",
+                "TTKSIM2_MSISDN_2_LAST_NAME": "ReceiverLast",
+                "TTKSIM2_PARTY_NOT_FOUND": "partynotfound",
+                "TTKSIM2_PARTY_TIMES_OUT": "partytimesout",
+                "TTKSIM2_CURRENCY": "TZS",
+                "TTKSIM3_FSPID": "ttksim3",
+                "TTKSIM3_MSISDN_1": "5671000001",
+                "TTKSIM3_MSISDN_1_FIRST_NAME": "ReceiverFirst",
+                "TTKSIM3_MSISDN_1_LAST_NAME": "ReceiverLast",
+                "TTKSIM3_MSISDN_2": "5671000002",
+                "TTKSIM3_MSISDN_2_FIRST_NAME": "ReceiverFirst",
+                "TTKSIM3_MSISDN_2_LAST_NAME": "ReceiverLast",
+                "TTKSIM3_CURRENCY": "TZS",
+                "TTKSIM2_MSISDN_PREFIX": "4561",
+                "TTKSIM3_MSISDN_PREFIX": "5671",
+                "HOST_CENTRAL_LEDGER": "http://$release_name-centralledger-service",
+                "HOST_CENTRAL_SETTLEMENT": "http://$release_name-centralsettlement-service/v2"
+              }
             }
-          }
 
       ml-testing-toolkit-frontend:
         ingress:
@@ -11123,7 +11150,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/bulk-api-adapter
         tag: v17.0.0
         ## Specify a imagePullPolicy
@@ -11232,7 +11259,8 @@ mojaloop-bulk:
 
         # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
         # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-        protocol_versions: {
+        protocol_versions: |
+          {
             "CONTENT": {
               "DEFAULT": "1.1",
               "VALIDATELIST": [
@@ -11381,7 +11409,7 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/bulk-api-adapter
         tag: v17.0.0
         ## Specify a imagePullPolicy
@@ -11480,7 +11508,8 @@ mojaloop-bulk:
 
         # Protocol versions used for validating (VALIDATELIST) incoming FSPIOP API Headers (Content-type, Accept),
         # and for generating requests/callbacks from the Switch itself (DEFAULT value)
-        protocol_versions: {
+        protocol_versions: |
+          {
             "CONTENT": {
               "DEFAULT": "1.1",
               "VALIDATELIST": [
@@ -11686,9 +11715,9 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
-        tag: v17.4.0
+        tag: v17.6.0
         ## Specify a imagePullPolicy
         ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
         ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -12051,9 +12080,9 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
-        tag: v17.4.0
+        tag: v17.6.0
         ## Specify a imagePullPolicy
         ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
         ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -12413,9 +12442,9 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
-        tag: v17.4.0
+        tag: v17.6.0
         ## Specify a imagePullPolicy
         ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
         ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -12775,9 +12804,9 @@ mojaloop-bulk:
       # Declare variables to be passed into your templates.
 
       image:
-        registry: "docker.io"
+        registry: docker.io
         repository: mojaloop/central-ledger
-        tag: v17.4.0
+        tag: v17.6.0
         ## Specify a imagePullPolicy
         ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
         ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -13210,13 +13239,14 @@ ml-testing-toolkit:
       user_config.json: {
         "DEFAULT_ENVIRONMENT_FILE_NAME": "hub-k8s-default-environment.json"
       }
-      system_config.json: {
-        ## Uncomment for Socket IO configs for UI to Backend interactions. This may help if long running Test-Collections time-out.
-        #  "SOCKET_IO_ENGINE_OPTIONS": {
-        #     "pingInterval": 25000,
-        #     "pingTimeout": 300000
-        # }
-      }
+      # system_config.json: {
+      #   ## Uncomment for Socket IO configs for UI to Backend interactions. This may help if long running Test-Collections time-out.
+      #   #  "SOCKET_IO_ENGINE_OPTIONS": {
+      #   #     "pingInterval": 25000,
+      #   #     "pingTimeout": 300000
+      #   # }
+      # }
+      system_config.json: {}
       ## We can specify the files and folders here those we want to override in the TTK `spec_files` directory.
       ## For example, you can specify user_config.json, system_config.json ...etc
       ## Files inside the folders can be defined with full path of the files with slashes replaced by two underscores `__`.
@@ -13511,7 +13541,7 @@ ml-ttk-posthook-setup:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: &ttkGitUrl https://github.com/mojaloop/testing-toolkit-test-cases/archive/v15.3.0-snapshot.zip
-    testCasesPathInZip: &ttkGitPathSetup testing-toolkit-test-cases-15.2.0/collections/hub/provisioning
+    testCasesPathInZip: &ttkGitPathSetup testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/provisioning
     ttkBackendURL: http://$release_name-ml-testing-toolkit-backend:5050
   parameters:
     <<: *simNames
@@ -13524,7 +13554,7 @@ ml-ttk-posthook-tests:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: &ttkGitPathGP testing-toolkit-test-cases-15.2.0/collections/hub/golden_path
+    testCasesPathInZip: &ttkGitPathGP testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/golden_path
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
     ttkBackendURL: http://$release_name-ml-testing-toolkit-backend:5050
@@ -13625,7 +13655,7 @@ ml-ttk-cronjob-cleanup:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: &ttkGitPathCleanup testing-toolkit-test-cases-15.2.0/collections/hub/cleanup
+    testCasesPathInZip: &ttkGitPathCleanup testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/cleanup
     # testCasesPathInZip: *ttkGitPathGP
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
@@ -13734,7 +13764,7 @@ ml-ttk-test-val-bulk:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: testing-toolkit-test-cases-15.2.0/collections/hub/other_tests/bulk_transfers
+    testCasesPathInZip: testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/other_tests/bulk_transfers
     ## Optional config for uploading reports to S3 Buckets. If enabled: WS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION under the 'configCreds' is required.
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
@@ -13779,7 +13809,7 @@ ml-ttk-test-setup-tp:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: testing-toolkit-test-cases-15.2.0/collections/hub/provisioning_thirdparty
+    testCasesPathInZip: testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/provisioning_thirdparty
     ## Optional config for uploading reports to S3 Buckets. If enabled: WS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION under the 'configCreds' is required.
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
@@ -13824,7 +13854,7 @@ ml-ttk-test-val-tp:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: testing-toolkit-test-cases-15.2.0/collections/hub/thirdparty
+    testCasesPathInZip: testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/thirdparty
     # awsS3FilePath: ttk-tests/reports
     testSuiteName: Thirdparty Tests
     environmentName: Development
@@ -13866,7 +13896,7 @@ ml-ttk-test-setup-sdk-bulk:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: testing-toolkit-test-cases-15.2.0/collections/hub/provisioning_sdkbulk
+    testCasesPathInZip: testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/provisioning_sdkbulk
     ## Optional config for uploading reports to S3 Buckets. If enabled: WS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION under the 'configCreds' is required.
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
@@ -13911,7 +13941,7 @@ ml-ttk-test-val-sdk-bulk:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: testing-toolkit-test-cases-15.2.0/collections/hub/sdk_scheme_adapter/bulk/basic
+    testCasesPathInZip: testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/sdk_scheme_adapter/bulk/basic
     ## Optional config for uploading reports to S3 Buckets. If enabled: WS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION under the 'configCreds' is required.
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
@@ -13956,7 +13986,7 @@ ml-ttk-test-val-sdk-r2p:
   config:
     ## Test-case archive zip for test-cases: https://github.com/mojaloop/testing-toolkit-test-cases
     testCasesZipUrl: *ttkGitUrl
-    testCasesPathInZip: testing-toolkit-test-cases-15.2.0/collections/hub/sdk_scheme_adapter/request-to-pay/basic
+    testCasesPathInZip: testing-toolkit-test-cases-15.3.0-snapshot/collections/hub/sdk_scheme_adapter/request-to-pay/basic
     ## Optional config for uploading reports to S3 Buckets. If enabled: WS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION under the 'configCreds' is required.
     # awsS3BucketName: aws-s3-bucket-name
     # awsS3FilePath: ttk-tests/reports
