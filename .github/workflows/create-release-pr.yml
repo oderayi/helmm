@@ -138,135 +138,135 @@ jobs:
             exit 1
           fi
 
-      # - name: Prepare TTK test cases release
-      #   id: prepare-ttk-test-cases-release
-      #   uses: ncipollo/release-action@v1
-      #   with:
-      #     token: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #     repo: testing-toolkit-test-cases
-      #     makeLatest: true
-      #     allowUpdates: false
-      #     generateReleaseNotes: true
-      #     skipIfReleaseExists: true
-      #     tag: ${{ steps.determine-release-version.outputs.RELEASE_VERSION }}
-      #     commit: master
+      - name: Prepare TTK test cases release
+        id: prepare-ttk-test-cases-release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.AUTO_RELEASE_TOKEN }}
+          repo: testing-toolkit-test-cases
+          makeLatest: true
+          allowUpdates: false
+          generateReleaseNotes: true
+          skipIfReleaseExists: true
+          tag: ${{ steps.determine-release-version.outputs.RELEASE_VERSION }}
+          commit: master
 
-      # - name: Update TTK test cases version to charts
-      #   id: update-ttk-test-cases-version
-      #   run: updatecli apply --config .github/workflows/manifests/first-pass/mojaloop.yaml
+      - name: Update TTK test cases version to charts
+        id: update-ttk-test-cases-version
+        run: updatecli apply --config .github/workflows/manifests/first-pass/mojaloop.yaml
 
-      # - name: Generate release note
-      #   id: generate-release-note
-      #   env:
-      #     AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #   run: |
-      #     .github/workflows/scripts/generate-release-note.sh '${{ inputs.release_name }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.last_release_tag }}' '${{ inputs.example_backend_version }}'
-      #     echo "RELEASE_NOTE=$(cat .changelog/release-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}.md)" >> $GITHUB_OUTPUT
+      - name: Generate release note
+        id: generate-release-note
+        env:
+          AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+        run: |
+          .github/workflows/scripts/generate-release-note.sh '${{ inputs.release_name }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.last_release_tag }}' '${{ inputs.example_backend_version }}'
+          echo "RELEASE_NOTE=$(cat .changelog/release-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}.md)" >> $GITHUB_OUTPUT
 
-      # - name: Create pull request
-      #   id: create_pr
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     token: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #     commit-message: "chore: upgrade helm chart depdenencies"
-      #     title: "[auto] feat: release candidate for ${{ inputs.release_name }} ${{ steps.determine-release-version.outputs.RELEASE_VERSION }}"
-      #     body: |
-      #       ${{ steps.generate-release-note.outputs.RELEASE_NOTE }}
-      #     branch: release/release-candidate-${{ inputs.release_name }}-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}-${{ github.run_id }}
-      #     base: master
-      #     draft: true
+      - name: Create pull request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.AUTO_RELEASE_TOKEN }}
+          commit-message: "chore: upgrade helm chart depdenencies"
+          title: "[auto] feat: release candidate for ${{ inputs.release_name }} ${{ steps.determine-release-version.outputs.RELEASE_VERSION }}"
+          body: |
+            ${{ steps.generate-release-note.outputs.RELEASE_NOTE }}
+          branch: release/release-candidate-${{ inputs.release_name }}-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}-${{ github.run_id }}
+          base: master
+          draft: true
 
-      # - name: Clone oss-core-env repository
-      #   id: clone-oss-core-env
-      #   uses: actions/checkout@v4
-      #   with:
-      #     token: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #     # repository: mojaloop/oss-core-env
-      #     repository: oderayi/oss-core-env
-      #     ref: main
-      #     path: .tmp/oss-core-env
+      - name: Clone oss-core-env repository
+        id: clone-oss-core-env
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.AUTO_RELEASE_TOKEN }}
+          # repository: mojaloop/oss-core-env
+          repository: oderayi/oss-core-env
+          ref: main
+          path: .tmp/oss-core-env
       
-      # - name: Prepare deployment values file
-      #   id: prep-deployment-values-file
-      #   run: |
-      #     set -a && . .tmp/oss-core-env/config/test-mojaloop-live/.env && set +a
-      #     sed -i "s/{{CI_ENV_NAME}}/$ENV_NAME/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
-      #     sed -i "s/{{CI_HELM_NAMESPACE}}/${{ inputs.deployment_namespace }}/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
-      #     sed -i "s/{{CI_ENV_VERSION}}/${{ steps.determine-release-version.outputs.RELEASE_VERSION }}/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
+      - name: Prepare deployment values file
+        id: prep-deployment-values-file
+        run: |
+          set -a && . .tmp/oss-core-env/config/test-mojaloop-live/.env && set +a
+          sed -i "s/{{CI_ENV_NAME}}/$ENV_NAME/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
+          sed -i "s/{{CI_HELM_NAMESPACE}}/${{ inputs.deployment_namespace }}/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
+          sed -i "s/{{CI_ENV_VERSION}}/${{ steps.determine-release-version.outputs.RELEASE_VERSION }}/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
       
-      # # - name: Install YQ # Ref: https://mikefarah.gitbook.io/yq/
-      # #   run: |
-      # #      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq &&\
-      # #      chmod +x /usr/local/bin/yq
-
-      # # - name: Get EKS cluster name
-      # #   id: get-eks-cluster-name
-      # #   run: |
-      # #     export EKS_CLUSTER_NAME=$(cat .tmp/oss-core-env/config/test-mojaloop-live/eks-config.yml | yq '.metadata.name')
-      # #     echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME"
-      # #     echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME" >> $GITHUB_ENV
-      
-      # - name: Set KUBECONFIG
+      # - name: Install YQ # Ref: https://mikefarah.gitbook.io/yq/
       #   run: |
-      #     # echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME"
-      #     # aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+      #      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq &&\
+      #      chmod +x /usr/local/bin/yq
 
-      #     echo "${{ secrets.AUTO_RELEASE_KUBECONFIG }}" > .tmp/test.mojaloop.live.conf
+      # - name: Get EKS cluster name
+      #   id: get-eks-cluster-name
+      #   run: |
+      #     export EKS_CLUSTER_NAME=$(cat .tmp/oss-core-env/config/test-mojaloop-live/eks-config.yml | yq '.metadata.name')
+      #     echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME"
+      #     echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME" >> $GITHUB_ENV
+      
+      - name: Set KUBECONFIG
+        run: |
+          # echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME"
+          # aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+
+          echo "${{ secrets.AUTO_RELEASE_KUBECONFIG }}" > .tmp/test.mojaloop.live.conf
           
-      #     # Secure file, remove group read access
-      #     chmod 600 .tmp/test.mojaloop.live.conf
+          # Secure file, remove group read access
+          chmod 600 .tmp/test.mojaloop.live.conf
           
-      # - name: Cluster Info
-      #   env:
-      #     KUBECONFIG: .tmp/test.mojaloop.live.conf
-      #   run: |
-      #     kubectl cluster-info
-      #     # kubectl get pods -A -o wide
+      - name: Cluster Info
+        env:
+          KUBECONFIG: .tmp/test.mojaloop.live.conf
+        run: |
+          kubectl cluster-info
+          # kubectl get pods -A -o wide
       
-      # - name: Delete existing deployments
-      #   id: delete-existing-deployments
-      #   env:
-      #     KUBECONFIG: .tmp/test.mojaloop.live.conf
-      #   run: |
-      #     # Delete existing deployments
-      #     helm ls -n ${{ inputs.deployment_namespace }} --short | xargs -L1 sh -c 'if [ -n "$1" ]; then helm uninstall -n ${{ inputs.deployment_namespace }} "$1"; fi' _
+      - name: Delete existing deployments
+        id: delete-existing-deployments
+        env:
+          KUBECONFIG: .tmp/test.mojaloop.live.conf
+        run: |
+          # Delete existing deployments
+          helm ls -n ${{ inputs.deployment_namespace }} --short | xargs -L1 sh -c 'if [ -n "$1" ]; then helm uninstall -n ${{ inputs.deployment_namespace }} "$1"; fi' _
 
-      # - name: Deploy backend
-      #   id: deploy-backend
-      #   env:
-      #     KUBECONFIG: .tmp/test.mojaloop.live.conf
-      #   run: |
-      #     # Install example-backend
-      #     helm install backend mojaloop/example-mojaloop-backend --namespace ${{ inputs.deployment_namespace }}
+      - name: Deploy backend
+        id: deploy-backend
+        env:
+          KUBECONFIG: .tmp/test.mojaloop.live.conf
+        run: |
+          # Install example-backend
+          helm install backend mojaloop/example-mojaloop-backend --namespace ${{ inputs.deployment_namespace }}
 
-      # - name: Build charts
-      #   id: build-charts
-      #   run: |
-      #     ./update-charts-dep.sh
+      - name: Build charts
+        id: build-charts
+        run: |
+          ./update-charts-dep.sh
           
-      # - name: Deploy charts
-      #   id: deploy-charts
-      #   env:
-      #     KUBECONFIG: .tmp/test.mojaloop.live.conf
-      #   run: |
-      #     # Install Mojaloop
-      #     helm install ${{ inputs.deployment_release_name }} ./mojaloop -f .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }} --namespace ${{ inputs.deployment_namespace }}
+      - name: Deploy charts
+        id: deploy-charts
+        env:
+          KUBECONFIG: .tmp/test.mojaloop.live.conf
+        run: |
+          # Install Mojaloop
+          helm install ${{ inputs.deployment_release_name }} ./mojaloop -f .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }} --namespace ${{ inputs.deployment_namespace }}
       
-      # - name: Wait for deployment to be ready
-      #   env:
-      #     KUBECONFIG: .tmp/test.mojaloop.live.conf
-      #   run: |
-      #     # Wait until all pods are ready
-      #     while [[ $(kubectl get pods -n ${{ inputs.deployment_namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | grep False) ]]; do 
-      #       echo "Waiting for pods to be ready..."
-      #       sleep 10
-      #     done
-      #     echo "All pods are ready!"
+      - name: Wait for deployment to be ready
+        env:
+          KUBECONFIG: .tmp/test.mojaloop.live.conf
+        run: |
+          # Wait until all pods are ready
+          while [[ $(kubectl get pods -n ${{ inputs.deployment_namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | grep False) ]]; do 
+            echo "Waiting for pods to be ready..."
+            sleep 10
+          done
+          echo "All pods are ready!"
       
-      # - name: Run TTK tests
-      #   id: run-ttk-tests
-      #   env:
-      #     KUBECONFIG: .tmp/test.mojaloop.live.conf
-      #   run: |
-      #     # Run TTK tests
-      #     helm test ${{ inputs.deployment_release_name }} --namespace ${{ inputs.deployment_namespace }}
+      - name: Run TTK tests
+        id: run-ttk-tests
+        env:
+          KUBECONFIG: .tmp/test.mojaloop.live.conf
+        run: |
+          # Run TTK tests
+          helm test ${{ inputs.deployment_release_name }} --namespace ${{ inputs.deployment_namespace }}
