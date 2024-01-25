@@ -7,6 +7,10 @@
 
 set -e
 
+usage() {
+    echo "determine-release-version [last_release_tag]"
+}
+
 ####################################
 # Environment and arguments check  #
 ####################################
@@ -14,14 +18,6 @@ set -e
 # Check if the current shell is bash and the version is >= 4.0.0
 if [ -z "$BASH_VERSION" ] || [ "${BASH_VERSION:0:1}" -lt 4 ]; then
     echo "This script requires bash >= v4.0.0. Please install bash >= v4.0.0 and try again."
-    exit 1
-fi
-
-# Check if the last_release_tag argument is provided
-if [ -z "$1" ]; then
-    echo "The \"last_release_tag\" argument is not provided. Please provide the \"last_release_tag\" argument and try again."
-    usage
-    echo "last_release_tag = [ null | tag of the last release ]"
     exit 1
 fi
 
@@ -52,10 +48,6 @@ fi
 ######################
 # Helper functions   #
 ######################
-
-usage() {
-    echo "determine-release-version last_release_tag"
-}
 
 bump_version() {
     old_version=$1
