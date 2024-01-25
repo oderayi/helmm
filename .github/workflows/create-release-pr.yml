@@ -153,6 +153,8 @@ jobs:
 
       - name: Update TTK test cases version to charts
         id: update-ttk-test-cases-version
+        env:
+          AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: updatecli apply --config .github/workflows/manifests/first-pass/mojaloop.yaml
 
       - name: Generate release note
