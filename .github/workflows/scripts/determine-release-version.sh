@@ -41,7 +41,6 @@ readonly PATCH=2
 # 'last_release_tag' is the last release tag, if not provided, it will be the last tag in the current branch
 if [ -z "$1" ] || [ $1 == null ]; then
     last_release_tag=$(git describe --tags --abbrev=0)
-    echo "The \"last_release_tag\" argument is not provided. Using last tag in the current branch: $last_release_tag"
 else
     last_release_tag=$1
 fi
