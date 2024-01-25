@@ -27,7 +27,7 @@ on:
       last_release_tag:
         type: string
         description: "Last release tag (e.g. v1.0.0)"
-        required: true
+        required: false
       example_backend_version:
         type: string
         description: "Example backend version (e.g. v1.0.0)"
