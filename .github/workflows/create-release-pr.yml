@@ -66,11 +66,6 @@ jobs:
         with:
           ref: ${{ inputs.branch }}
           fetch-depth: 0
-      
-      # - name: Fetch git tags
-      #   id: fetch-git-tags
-      #   run: |
-      #     git fetch --tags
 
       - name: Set up Helm
         id: setup-helm
@@ -108,11 +103,11 @@ jobs:
           helm repo add mojaloop https://mojaloop.io/helm/repo/
           helm repo update
 
-      # - name: Update chart dependencies
-      #   id: update-chart-dependencies
-      #   env:
-      #     AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #   run: .github/workflows/scripts/update-charts.sh
+      - name: Update chart dependencies
+        id: update-chart-dependencies
+        env:
+          AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+        run: .github/workflows/scripts/update-charts.sh
 
       - name: Generate changelog
         id: generate-changelog
