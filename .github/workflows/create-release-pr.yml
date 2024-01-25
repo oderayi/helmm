@@ -119,10 +119,9 @@ jobs:
         id: determine-release-version
         env:
           _RELEASE_VERSION: ${{ inputs.release_version }}
-          _LAST_RELEASE_TAG: ${{ inputs.last_release_tag }}
         run: |
           if [[ -z $_RELEASE_VERSION ]]; then
-            release_version=$(.github/workflows/scripts/determine-release-version.sh $_LAST_RELEASE_TAG)
+            release_version=$(.github/workflows/scripts/determine-release-version.sh '${{ inputs.last_release_tag }}')
             echo "release_version=$release_version"
             echo "RELEASE_VERSION=$(echo $release_version)" >> "$GITHUB_OUTPUT"
           else
@@ -151,7 +150,7 @@ jobs:
           tag: ${{ steps.determine-release-version.outputs.RELEASE_VERSION }}
           commit: master
 
-      - name: Update TTK test cases version to charts
+      - name: Update TTK test cases version
         id: update-ttk-test-cases-version
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
@@ -162,7 +161,7 @@ jobs:
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: |
-          .github/workflows/scripts/generate-release-note.sh '${{ inputs.release_name }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.last_release_tag }}' '${{ inputs.example_backend_version }}'
+          .github/workflows/scripts/generate-release-note.sh '${{ inputs.release_name }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.last_release_tag }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.example_backend_version }}'
           echo "RELEASE_NOTE=$(cat .changelog/release-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}.md)" >> $GITHUB_OUTPUT
 
       - name: Create pull request
