@@ -194,23 +194,8 @@ jobs:
           sed -i "s/{{CI_HELM_NAMESPACE}}/${{ inputs.deployment_namespace }}/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
           sed -i "s/{{CI_ENV_VERSION}}/${{ steps.determine-release-version.outputs.RELEASE_VERSION }}/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
       
-      # - name: Install YQ # Ref: https://mikefarah.gitbook.io/yq/
-      #   run: |
-      #      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq &&\
-      #      chmod +x /usr/local/bin/yq
-
-      # - name: Get EKS cluster name
-      #   id: get-eks-cluster-name
-      #   run: |
-      #     export EKS_CLUSTER_NAME=$(cat .tmp/oss-core-env/config/test-mojaloop-live/eks-config.yml | yq '.metadata.name')
-      #     echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME"
-      #     echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME" >> $GITHUB_ENV
-      
       - name: Set KUBECONFIG
         run: |
-          # echo "EKS_CLUSTER_NAME=$EKS_CLUSTER_NAME"
-          # aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
-
           echo "${{ secrets.AUTO_RELEASE_KUBECONFIG }}" > .tmp/test.mojaloop.live.conf
           
           # Secure file, remove group read access
