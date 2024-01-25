@@ -16,7 +16,9 @@ if [ ! -d "$dir" ]; then
 fi
 
 # First pass - update with github releases and published helm charts
-updatecli apply --config .github/workflows/manifests/first-pass
+# updatecli apply --config .github/workflows/manifests/first-pass
+updatecli apply --config .github/workflows/manifests/first-pass/account-lookup-service.yaml
+exit 0
 
 # Second pass - update with locally referenced charts
 # runs the second-pass manifests repeatedly until no changes are detected
