@@ -148,7 +148,9 @@ jobs:
         id: generate-release-note
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-        run: .github/workflows/scripts/generate-release-note.sh '${{ inputs.release_name }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.last_release_tag }}' '${{ inputs.example_backend_version }}'
+        run: |
+          .github/workflows/scripts/generate-release-note.sh '${{ inputs.release_name }}' '${{ steps.determine-release-version.outputs.RELEASE_VERSION }}' '${{ inputs.last_release_tag }}' '${{ inputs.example_backend_version }}'
+          echo "RELEASE_NOTE=$(cat .changelog/release-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}.md)" >> $GITHUB_OUTPUT
 
       - name: Create pull request
         id: create_pr
@@ -156,10 +158,10 @@ jobs:
         with:
           token: ${{ secrets.AUTO_RELEASE_TOKEN }}
           commit-message: "chore: upgrade helm chart depdenencies"
-          title: "[auto] feat: release candidate"
+          title: "[auto] feat: release candidate for ${{ inputs.release_name }} ${{ steps.determine-release-version.outputs.RELEASE_VERSION }}"
           body: |
-            Release candidate for the next version of the helm charts.
-          branch: release/release-candidate-${{ github.run_id }}
+            ${{ steps.generate-release-note.outputs.RELEASE_NOTE }}
+          branch: release/release-candidate-${{ inputs.release_name }}-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}-${{ github.run_id }}
           base: master
           draft: true
 
