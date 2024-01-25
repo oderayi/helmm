@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Description: This script is used to generate the changelog for all changes in all repositories between a previous release tag and the current branch.
 # Requirements: bash >= v4.0.0, curl, git, helm
 # Usage: .github/workflows/scripts/generate-changelog.sh last_release_tag

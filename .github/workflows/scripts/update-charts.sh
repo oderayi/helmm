@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Description: This script updates the Helm charts dependencies
 # Requirements: bash, updatecli, helm
 # Usage: .github/workflows/scripts/update-charts.sh
@@ -23,7 +25,7 @@ updatecli apply --config .github/workflows/manifests/first-pass
 pass_count=0
 
 # Repeatedly run the second-pass manifests until no changes are detected
-while ! (grep -q "* Changed:	0" output.log); do
+while ! (grep -q "* Changed:	0" $dir/output.log); do
     echo -e "\nUpdating charts ... pass: $((++pass_count))\n"
     ./update-charts-dep.sh 
     find . -maxdepth 1 -type d -not -path '*/\.*' | sed 's/^\.\///g' | xargs -I {} helm repo index {} 
