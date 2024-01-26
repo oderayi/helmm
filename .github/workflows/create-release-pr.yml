@@ -90,7 +90,6 @@ jobs:
       - name: Setup Helm repositories
         id: setup-helm-repos
         run: |
-          # Setup Helm Repos
           helm repo add stable https://charts.helm.sh/stable
           helm repo add incubator https://charts.helm.sh/incubator
           helm repo add kiwigrid https://kiwigrid.github.io
@@ -131,7 +130,6 @@ jobs:
       - name: Next release version
         run: |
           release_version='${{ steps.determine-release-version.outputs.RELEASE_VERSION }}'
-          # if release_version is not set, or it doesn't match a valid semver version, exit with error
           if [[ -z "$release_version" || ! "$release_version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "RELEASE_VERSION is not set or is not a valid semver version"
             exit 1
@@ -155,6 +153,19 @@ jobs:
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: updatecli apply --config .github/workflows/manifests/third-pass/mojaloop.yaml
+      
+      - name: Syncronize release version with mojaloop chart version
+        id: syncronize-release-version-with-mojaloop-chart-version
+        env:
+          AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+        run: |
+          release_version='${{ steps.determine-release-version.outputs.RELEASE_VERSION }}'
+          if [[ -z "$release_version" || ! "$release_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "RELEASE_VERSION is not set or is not a valid semver version"
+            exit 1
+          fi
+          sed -i "s/^version:.*/version: $release_version/" mojaloop/Chart.yaml
+          awk -v release_version="$release_version" '/^version:/ {print "version: " release_version; next} 1' mojaloop/Chart.yaml > mojaloop/Chart.yaml.tmp && mv mojaloop/Chart.yaml.tmp mojaloop/Chart.yaml
 
       - name: Generate release note
         id: generate-release-note
@@ -197,32 +208,24 @@ jobs:
       - name: Set KUBECONFIG
         run: |
           echo "${{ secrets.AUTO_RELEASE_KUBECONFIG }}" > .tmp/test.mojaloop.live.conf
-          
-          # Secure file, remove group read access
           chmod 600 .tmp/test.mojaloop.live.conf
           
       - name: Cluster Info
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
-        run: |
-          kubectl cluster-info
-          # kubectl get pods -A -o wide
+        run: kubectl cluster-info
       
       - name: Delete existing deployments
         id: delete-existing-deployments
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
-        run: |
-          # Delete existing deployments
-          helm ls -n ${{ inputs.deployment_namespace }} --short | xargs -L1 sh -c 'if [ -n "$1" ]; then helm uninstall -n ${{ inputs.deployment_namespace }} "$1"; fi' _
+        run: helm ls -n ${{ inputs.deployment_namespace }} --short | xargs -L1 sh -c 'if [ -n "$1" ]; then helm uninstall -n ${{ inputs.deployment_namespace }} "$1"; fi' _
 
       - name: Deploy backend
         id: deploy-backend
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
-        run: |
-          # Install example-backend
-          helm install backend mojaloop/example-mojaloop-backend --namespace ${{ inputs.deployment_namespace }}
+        run: helm install backend mojaloop/example-mojaloop-backend --namespace ${{ inputs.deployment_namespace }}
 
       - name: Build charts
         id: build-charts
@@ -241,7 +244,6 @@ jobs:
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
         run: |
-          # Wait until all pods are ready
           while [[ $(kubectl get pods -n ${{ inputs.deployment_namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | grep False) ]]; do 
             echo "Waiting for pods to be ready..."
             sleep 10
@@ -253,5 +255,4 @@ jobs:
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
         run: |
-          # Run TTK tests
           helm test ${{ inputs.deployment_release_name }} --namespace ${{ inputs.deployment_namespace }}
