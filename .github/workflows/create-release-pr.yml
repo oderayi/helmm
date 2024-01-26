@@ -243,12 +243,14 @@ jobs:
       - name: Wait for deployment to be ready
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
+        timeout-minutes: 30
         run: |
           while [[ $(kubectl get pods -n ${{ inputs.deployment_namespace }} -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}' | grep False) ]]; do 
             echo "Waiting for pods to be ready..."
             sleep 10
           done
           echo "All pods are ready!"
+        continue-on-error: true
       
       - name: Run TTK tests
         id: run-ttk-tests
