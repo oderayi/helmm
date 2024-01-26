@@ -4,8 +4,8 @@ Date | Revision | Description
 ---------|----------|---------
 {{RELEASE_DATE}} | 0 | Initial draft
 
-- For *BREAKING ISSUES*, please review the section `#6` "Breaking Changes" below.
-- For *KNOWN ISSUES*, please review the section `#7` "Known Issues" below.
+- For *BREAKING ISSUES*, please review the section `#6` ["Breaking Changes"](#6-breaking-changes) below.
+- For *KNOWN ISSUES*, please review the section `#7` ["Known Issues"](#7-known-issues) below.
 
 ## 0. Summary
 

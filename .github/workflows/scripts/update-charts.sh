@@ -32,6 +32,3 @@ while ! (grep -q "* Changed:	0" $dir/output.log); do
     find . -maxdepth 1 -type d -not -path '*/\.*' | sed 's/^\.\///g' | xargs -I {} helm repo index {} 
     updatecli apply --config .github/workflows/manifests/second-pass |& tee $dir/output.log
 done
-
-# Remove temporary file
-rm -f $dir/output.log
