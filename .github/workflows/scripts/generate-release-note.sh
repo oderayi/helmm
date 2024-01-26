@@ -139,7 +139,6 @@ new_features() {
                 continue
             fi
             echo -e "* **mojaloop/#$issue_number** $description ([mojaloop/#$pr_number](https://github.com/mojaloop/$repository/pull/$pr_number)), closes [mojaloop/#$issue_number](https://github.com/mojaloop/project/issues/$issue_number)"
-            
         done
     done
 }
