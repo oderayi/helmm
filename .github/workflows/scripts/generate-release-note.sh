@@ -134,6 +134,10 @@ new_features() {
             description=$(echo "$line" | awk -F ': ' '{print $2}' | awk -F ' \\(#' '{print $1}')
             issue_number=$(echo "$line" | awk -F '[/#)]' '{print $3}')
             pr_number=$(echo "$line" | sed -n -e 's/.*(#\([^)]*\))$/\1/p')
+            if [[ -z $pr_number ]] || [[ -z $issue_number ]]
+            then
+                continue
+            fi
             echo -e "* **mojaloop/#$issue_number** $description ([mojaloop/#$pr_number](https://github.com/mojaloop/$repository/pull/$pr_number)), closes [mojaloop/#$issue_number](https://github.com/mojaloop/project/issues/$issue_number)"
             
         done
