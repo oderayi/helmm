@@ -31,6 +31,8 @@ if [ -z "$AUTO_RELEASE_TOKEN" ]; then
     exit 1
 fi
 
+release_name=$1
+
 # Check if the release_version argument is provided
 if [ -z "$2" ]; then
     echo "The \"release_version\" argument is not provided. Please provide the \"release_version\" argument and try again."
@@ -196,8 +198,12 @@ individual_contributors() {
     for file in $dir/changelogs/*.json
     do
         repository=$(basename $file | cut -d'.' -f1)
-        individual_contributors+=$(cat $file | jq -r '.commits[].author | select(.login != null) .login'  | sed 's/^/@/' | sort -u | tr '\n' ',' | sed 's/,$//g' | sed 's/,/, /g')
+        individual_contributors+=$(cat $file | jq -r '.commits[].author | select(.login != null) .login'  | sed 's/^/@/' | tr '\n' ', ' | sed 's/,$//g' | sed 's/,/, /g')
+        individual_contributors+=", "
     done
+
+    # Remove duplicates and trailing comma
+    individual_contributors=$(echo "$individual_contributors" | tr ', ' '\n' | sort -u | grep . | tr '\n' ',' | sed 's/,$//g' | sed 's/,/, /g')
 
     echo "$individual_contributors"
 }
@@ -258,6 +264,7 @@ done < "$dir/tags/current-tags.log"
 # The template contains placeholders that are replaced with the PR titles from the changelogs and other information
 
 # Populate and export template variables for "mo"
+export RELEASE_NAME=$release_name
 export RELEASE_DATE=$(date +%Y-%m-%d)
 export BREAKING_CHANGES=$(breaking_changes)
 [[ -z $BREAKING_CHANGES  ]] && export BREAKING_CHANGES_STATUS_TEXT="non-breaking" || export BREAKING_CHANGES_STATUS_TEXT="breaking"
@@ -288,12 +295,5 @@ fi
 # Write release_note content to .changelog/release-$CURRENT_RELEASE_VERSION.md
 mkdir -p .changelog
 echo "$release_note" > .changelog/release-$CURRENT_RELEASE_VERSION.md
-
-######################
-# Cleanup            #
-######################
-
-# Remove temporary directory and files
-rm -rf $dir
 
 echo "Release note generated at .changelog/release-$CURRENT_RELEASE_VERSION.md"
