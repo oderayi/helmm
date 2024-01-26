@@ -17,7 +17,6 @@ fi
 
 # First pass - update with github releases and published helm charts
 updatecli apply --config .github/workflows/manifests/first-pass
-exit 0
 
 # Second pass - update with locally referenced charts
 # runs the second-pass manifests repeatedly until no changes are detected
