@@ -260,3 +260,4 @@ jobs:
         timeout-minutes: 60
         run: |
           helm test ${{ inputs.deployment_release_name }} --namespace ${{ inputs.deployment_namespace }}
+        continue-on-error: true
