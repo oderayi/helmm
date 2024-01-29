@@ -257,5 +257,6 @@ jobs:
         id: run-ttk-tests
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
+        timeout-minutes: 60
         run: |
           helm test ${{ inputs.deployment_release_name }} --namespace ${{ inputs.deployment_namespace }}
