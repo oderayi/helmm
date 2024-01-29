@@ -61,20 +61,17 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout
-        id: checkout
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.branch }}
           fetch-depth: 0
 
       - name: Set up Helm
-        id: setup-helm
         uses: azure/setup-helm@v3
         with:
           version: v3.13.3
 
       - name: Install dependencies
-        id: install-dpendencies
         run: |
           # Install mo
           curl -sL https://raw.githubusercontent.com/tests-always-included/mo/master/mo -o /usr/local/bin/mo
@@ -88,7 +85,6 @@ jobs:
           sudo apt-get install jq
 
       - name: Setup Helm repositories
-        id: setup-helm-repos
         run: |
           helm repo add stable https://charts.helm.sh/stable
           helm repo add incubator https://charts.helm.sh/incubator
@@ -103,13 +99,11 @@ jobs:
           helm repo update
 
       - name: Update chart dependencies
-        id: update-chart-dependencies
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: .github/workflows/scripts/update-charts.sh
 
       - name: Generate changelog
-        id: generate-changelog
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: .github/workflows/scripts/generate-changelog.sh ${{ inputs.last_release_tag }}
@@ -136,7 +130,6 @@ jobs:
           fi
 
       - name: Prepare TTK test cases release
-        id: prepare-ttk-test-cases-release
         uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.AUTO_RELEASE_TOKEN }}
@@ -149,13 +142,11 @@ jobs:
           commit: master
 
       - name: Update TTK test cases version
-        id: update-ttk-test-cases-version
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: updatecli apply --config .github/workflows/manifests/third-pass/mojaloop.yaml
       
       - name: Syncronize release version with mojaloop chart version
-        id: syncronize-release-version-with-mojaloop-chart-version
         env:
           AUTO_RELEASE_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: |
@@ -177,7 +168,6 @@ jobs:
           echo "RELEASE_NOTE_FILE=.changelog/release-${{ steps.determine-release-version.outputs.RELEASE_VERSION }}.md" >> "$GITHUB_OUTPUT"
 
       - name: Create pull request
-        id: create_pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.AUTO_RELEASE_TOKEN }}
@@ -189,7 +179,6 @@ jobs:
           draft: true
 
       - name: Clone oss-core-env repository
-        id: clone-oss-core-env
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.AUTO_RELEASE_TOKEN }}
@@ -199,7 +188,6 @@ jobs:
           path: .tmp/oss-core-env
       
       - name: Prepare deployment values file
-        id: prep-deployment-values-file
         run: |
           set -a && . .tmp/oss-core-env/config/test-mojaloop-live/.env && set +a
           sed -i "s/{{CI_ENV_NAME}}/$ENV_NAME/" .tmp/oss-core-env/config/test-mojaloop-live/${{ inputs.deployment_values_file }}
@@ -217,24 +205,20 @@ jobs:
         run: kubectl cluster-info
       
       - name: Delete existing deployments
-        id: delete-existing-deployments
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
         run: helm ls -n ${{ inputs.deployment_namespace }} --short | xargs -L1 sh -c 'if [ -n "$1" ]; then helm uninstall -n ${{ inputs.deployment_namespace }} "$1"; fi' _
 
       - name: Deploy backend
-        id: deploy-backend
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
         run: helm install backend mojaloop/example-mojaloop-backend --namespace ${{ inputs.deployment_namespace }}
 
       - name: Build charts
-        id: build-charts
         run: |
           ./update-charts-dep.sh
           
       - name: Deploy charts
-        id: deploy-charts
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
         run: |
@@ -254,10 +238,13 @@ jobs:
         continue-on-error: true
       
       - name: Run TTK tests
-        id: run-ttk-tests
         env:
           KUBECONFIG: .tmp/test.mojaloop.live.conf
         timeout-minutes: 60
         run: |
           helm test ${{ inputs.deployment_release_name }} --namespace ${{ inputs.deployment_namespace }}
         continue-on-error: true
+      
+      - name: Clean up
+        run: |
+            rm -rf .tmp
